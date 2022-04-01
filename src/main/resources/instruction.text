@@ -1,10 +1,11 @@
-Requirement:jdk 1.8,Eclipse
+Requirement:jdk 1.8,Eclipse,Git
 --verify jdk installed in system with cmd  java -version
 --clone code from https://github.com/diksha-it/greenfield-bowlinggame.git
---create one .text file name bowling-game.txt and put data as mentioned in task
-2.Import project in Eclipse and clean build and run mvn clean install -X
-3.Find target folder jar will be available there
-4.Put jar file in same folder where .text file available
-5.Put bat file in same folder 
-5.Open cmd prompt ,cd path of folder where files available
-6.trigger bat file or direct can run cmd in command prompt java -jar demo.jar bowling-game.txt
+--Import project in Eclipse As maven project and clean build and run mvn clean install -X
+--Find target folder jar will be available there with name bowlinggame-1.jar
+-- Create one directory Put jar file there 
+--copy bowling-game.txt frile from resource folder and put in same directory where jar file available,also put bat file from resource folder to directory
+--Copy Path of directory,and open command terminal
+--cd {path-of-directory}
+--replace path of bowling-game.txt and jar in bowling-script.bat file and trigger bat file
+ or direct can run cmd in command prompt java -jar {pathofjarfile} {path-of-bowling-game.txt file}
