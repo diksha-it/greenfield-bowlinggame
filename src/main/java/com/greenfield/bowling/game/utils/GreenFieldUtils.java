@@ -1,5 +1,7 @@
 package com.greenfield.bowling.game.utils;
 
+import com.greenfield.bowling.game.model.GreenFieldBowlingPlayers;
+
 public final class GreenFieldUtils {
 
 	private GreenFieldUtils() {
@@ -23,4 +25,12 @@ public final class GreenFieldUtils {
 
 	public static final String SPARE = "/";
 	public static final String SPACE = " ";
+
+	public static GreenFieldBowlingPlayers getDatMap(String[] a) {
+		if (a.length == GreenFieldUtils.INT_TWO) {
+			return new GreenFieldBowlingPlayers(a[GreenFieldUtils.INT_ZERO], a[GreenFieldUtils.INT_ONE],
+					GreenFieldUtils.FAILURE.equalsIgnoreCase(a[GreenFieldUtils.INT_ONE]) );
+		}
+		return new GreenFieldBowlingPlayers();
+	}
 }

@@ -1,7 +1,12 @@
 package com.greenfield.bowling.game.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,16 +18,31 @@ import com.greenfield.bowling.game.utils.GreenFieldUtils;
 public class GreenFieldBowlingGameServiceImpl implements GreenFieldBowlingGameService {
 
 	@Override
-	public void startGame(List<GreenFieldBowlingPlayers> playerList) {
+	public void startGame(String filePath) throws IOException {
+		List<GreenFieldBowlingPlayers> playerList = new ArrayList<>();
 
-//		Optional.ofNullable(playerList).orElseGet(Collections::emptyList).stream()
-//				.forEach(e -> System.out.println("Key : " + e.getName() + " value : " + e.getScore()));
+		playerList = Files.lines(new File(filePath).toPath())
+				.map(s -> GreenFieldUtils.getDatMap(s.split(GreenFieldUtils.SPACE))).collect(Collectors.toList());
+
+		startPalyingGame(playerList);
+	}
+
+	public String startPalyingGame(List<GreenFieldBowlingPlayers> playerList) {
 
 		Map<String, List<GreenFieldBowlingPlayers>> map = playerList.stream()
 				.collect(Collectors.groupingBy(GreenFieldBowlingPlayers::getName));
 
-		printScoreBoard(map);
+		Map<String, List<GreenFieldBowlingPlayers>> treeMap = getTreeMap(map);
 
+		printScoreBoard(treeMap);
+		
+		return "SUCCESS";
+
+	}
+
+	public static <K, V> Map<K, V> getTreeMap(Map<K, V> hashMap) {
+		return hashMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+				(oldValue, newValue) -> newValue, TreeMap::new));
 	}
 
 	private void printScoreBoard(Map<String, List<GreenFieldBowlingPlayers>> map) {
@@ -65,33 +85,39 @@ public class GreenFieldBowlingGameServiceImpl implements GreenFieldBowlingGameSe
 
 		});
 
-		printPinfalls(game);
+		printPinfalls(game,playerList);
 
 		printScore(game);
 
 	}
 
-	private void printPinfalls(GreenFieldBowlingGame game) {
+	private void printPinfalls(GreenFieldBowlingGame game,List<GreenFieldBowlingPlayers> playerList) {
 		System.out.print(GreenFieldScoreBoardEnum.PINFALLS.name() + GreenFieldUtils.SINGLE_TAB);
 
 		for (int index = GreenFieldUtils.INT_ZERO; index < game.frames.length; index++) {
 
-			String first = game.frames[index].getFirstRoll() == GreenFieldUtils.FRAME_SIZE_TEN
-					&& index != GreenFieldUtils.INT_NINE ? GreenFieldUtils.EMPTY
-							: game.frames[index].getFirstRoll() + GreenFieldUtils.EMPTY;
+			StringBuilder first = new StringBuilder(GreenFieldUtils.EMPTY);
+			if (index != GreenFieldUtils.INT_NINE) {
+				if (game.frames[index].getFirstRoll() != GreenFieldUtils.FRAME_SIZE_TEN) {
+					
+					first.append(game.frames[index].getFirstRoll());
+				}
+				first.append(GreenFieldUtils.SINGLE_TAB);
+			}
 
-			String second = GreenFieldUtils.EMPTY;
+			StringBuilder second = new StringBuilder(GreenFieldUtils.EMPTY);
 
 			if (game.frames[index].isSpare())
-				second = GreenFieldUtils.SPARE;
+				second.append(GreenFieldUtils.SPARE);
 			else if (game.frames[index].isStrike())
-				second = GreenFieldUtils.STRIKE;
-			else
-				second = game.frames[index].getSecondRoll() == GreenFieldUtils.FRAME_SIZE_TEN ? GreenFieldUtils.EMPTY
-						: game.frames[index].getSecondRoll() + GreenFieldUtils.EMPTY;
-
+				second.append(GreenFieldUtils.STRIKE);
+			else {
+				if (game.frames[index].getSecondRoll() != GreenFieldUtils.FRAME_SIZE_TEN)
+					second.append(game.frames[index].getSecondRoll());
+			}
 			if (index < GreenFieldUtils.INT_ELEVEN)
-				System.out.print(first + GreenFieldUtils.SINGLE_TAB + second + GreenFieldUtils.SINGLE_TAB);
+				System.out.print(first.toString() + second + GreenFieldUtils.SINGLE_TAB);
+			
 
 		}
 

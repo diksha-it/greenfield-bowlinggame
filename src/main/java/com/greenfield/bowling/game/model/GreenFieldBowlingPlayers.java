@@ -1,19 +1,22 @@
 package com.greenfield.bowling.game.model;
 
-public class GreenFieldBowlingPlayers implements Comparable<GreenFieldBowlingPlayers> {
+public class GreenFieldBowlingPlayers {
 
 	public String name;
 
 	public String score;
 
+	public boolean isF;
+
 	public GreenFieldBowlingPlayers() {
 		super();
 	}
 
-	public GreenFieldBowlingPlayers(String name, String score) {
+	public GreenFieldBowlingPlayers(String name, String score, boolean isF) {
 		super();
 		this.name = name;
 		this.score = score;
+		this.isF = isF;
 	}
 
 	public String getName() {
@@ -32,14 +35,17 @@ public class GreenFieldBowlingPlayers implements Comparable<GreenFieldBowlingPla
 		this.score = score;
 	}
 
-	@Override
-	public int compareTo(GreenFieldBowlingPlayers o) {
-		return this.getName().compareTo(o.getName());
+	public boolean isF() {
+		return isF;
+	}
+
+	public void setF(boolean isF) {
+		this.isF = isF;
 	}
 
 	@Override
 	public String toString() {
-		return "Players [name=" + name + ", score=" + score + "]";
+		return "GreenFieldBowlingPlayers [name=" + name + ", score=" + score + ", isF=" + isF + "]";
 	}
 
 }

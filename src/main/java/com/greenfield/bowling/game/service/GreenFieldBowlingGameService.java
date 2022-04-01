@@ -1,11 +1,9 @@
 package com.greenfield.bowling.game.service;
 
-import java.util.List;
-
-import com.greenfield.bowling.game.model.GreenFieldBowlingPlayers;
+import java.io.IOException;
 
 public interface GreenFieldBowlingGameService {
 
-	void startGame(List<GreenFieldBowlingPlayers> playerList);
+	void startGame(String filePath) throws IOException;
 
 }

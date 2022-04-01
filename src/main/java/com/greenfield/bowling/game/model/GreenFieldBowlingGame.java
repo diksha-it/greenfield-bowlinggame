@@ -197,10 +197,10 @@ public class GreenFieldBowlingGame {
 						return;
 					}
 				} else {
-					System.out.println("INVALID ROLL: The number of pins rolled is invalid for this attempt");
+					System.err.println("INVALID ROLL: The number of pins rolled is invalid for this attempt");
 				}
 			} else {
-				System.out.println("INVALID ROLL: Cannot knock more than 10 pins");
+				System.err.println("INVALID ROLL: Cannot knock more than 10 pins");
 			}
 		} else {
 			System.out.println("GAME OVER!!");
